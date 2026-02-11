@@ -7,7 +7,7 @@ categories: [R Programming, Data Science, Statistical Computing, Machine Learnin
 description: "The final part of our 5-part series comparing linear models with random forests and providing guidance for model selection in ecological research"
 image: "../../images/posts/penguin-hero.jpg"
 document-type: "blog"
-draft: true
+draft: false
 execute:
   echo: true
   warning: false
@@ -295,6 +295,17 @@ sessionInfo()
 **What's Next?** Apply these techniques to your own datasets and share your findings with the community!
 :::
 
-*Have questions about model selection or ecological modeling? Feel free to reach out on [Twitter](https://twitter.com/yourhandle) or [LinkedIn](https://linkedin.com/in/yourprofile). Complete code for this series is available on [GitHub](https://github.com/yourusername/palmer-penguins-series).*
+# Let's Connect
 
-**About the Author:** [Your name] is a [your role] specializing in statistical ecology and machine learning, demonstrating best practices for model selection in biological research.
+- **GitHub**: [rgt47](https://github.com/rgt47)
+- **Twitter/X**: [@rgt47](https://twitter.com/rgt47)
+- **LinkedIn**: [Ronald Glenn Thomas](https://linkedin.com/in/rgthomaslab)
+- **Email**: [Contact through website](https://rgtlab.org/contact)
+
+I would enjoy hearing from you if you:
+
+- Spot an error or have a correction
+- Have a better approach to any of these analyses
+- Want to discuss statistical methodology
+- Have questions about the Palmer Penguins dataset
+- Just want to connect and talk about data science
