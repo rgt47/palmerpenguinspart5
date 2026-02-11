@@ -1,311 +1,784 @@
 ---
-title: "Palmer Penguins Data Analysis Series (Part 5): Random Forest vs Linear Models - The Final Comparison"
-subtitle: "Settling the interpretability vs performance debate in ecological modeling"
-author: "Your Name"
+title: "Palmer Penguins Part 5: Random Forest versus
+  Linear Models"
+subtitle: >
+  Settling the interpretability-performance tradeoff
+  in ecological modelling
+author: "Ronald G. Thomas"
 date: "2025-01-05"
-categories: [R Programming, Data Science, Statistical Computing, Machine Learning, Random Forest, Model Comparison, Palmer Penguins]
-description: "The final part of our 5-part series comparing linear models with random forests and providing guidance for model selection in ecological research"
-image: "../../images/posts/penguin-hero.jpg"
+categories:
+  [R Programming, Data Science, Statistical Computing]
+description: >
+  I did not really know whether a random forest would
+  meaningfully outperform my linear model until I ran
+  a head-to-head comparison and found the gap was only
+  two percentage points.
+image: "media/images/hero.jpg"
 document-type: "blog"
-draft: false
+draft: true
 execute:
   echo: true
   warning: false
-  message: true
+  message: false
 format:
   html:
     code-fold: false
     code-tools: false
-    code-line-numbers: false
-    code-copy: false
 ---
 
-![Two penguins at a crossroads - one holding a linear regression equation, the other holding a decision tree, representing the classic interpretability vs performance tradeoff!](../../images/posts/penguin-gentoo-penguin-7073394_1280.jpg){.img-fluid alt="Two Palmer penguins at a crossroads, one holding mathematical equations representing linear models, the other holding a tree diagram representing random forest models"}
+![Penguins on rocky Antarctic
+terrain](media/images/hero.jpg){.img-fluid
+width=80%
+fig-alt="Group of penguins standing on rocky
+Antarctic terrain with the ocean and sky in the
+background"}
 
-*Photo: African penguins at Boulders Beach, South Africa. Licensed under [CC BY 2.0](https://creativecommons.org/licenses/by/2.0/) via [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Boulders_Beach_penguins_(46475505885).jpg)*
+*Palmer Penguins series, Part 5 (finale). Photo used
+under open licence.*
 
 ::: {.callout-note appearance="simple"}
-## 🐧 Palmer Penguins Data Analysis Series - FINALE
+## Palmer Penguins Data Analysis Series
 
-This is **Part 5** (Final) of our 5-part series exploring penguin morphometrics:
+This is **Part 5** (finale) of a 5-part series
+exploring penguin morphometrics:
 
-1. [Part 1: EDA and Simple Regression](../palmer_penguins_part1/)
-2. [Part 2: Multiple Regression and Species Effects](../palmer_penguins_part2/)
-3. [Part 3: Advanced Models and Cross-Validation](../palmer_penguins_part3/)
-4. [Part 4: Model Diagnostics and Interpretation](../palmer_penguins_part4/)
-5. **Part 5: Random Forest vs Linear Models** (This post - FINALE!)
+1. [Part 1: EDA and Simple
+   Regression](../08-palmerpenguinspart1/
+   palmerpenguinspart1/)
+2. [Part 2: Multiple Regression and Species
+   Effects](../09-palmerpenguinspart2/
+   palmerpenguinspart2/)
+3. [Part 3: Cross-Validation and Model
+   Comparison](../10-palmerpenguinspart3/
+   palmerpenguinspart3/)
+4. [Part 4: Model Diagnostics and
+   Interpretation](../11-palmerpenguinspart4/
+   palmerpenguinspart4/)
+5. **Part 5: Random Forest versus Linear
+   Models** (this post)
 :::
 
 # Introduction
 
-Welcome to the grand finale of our Palmer penguins data analysis journey! We've traveled far together - from basic exploratory analysis to sophisticated diagnostics, building and validating models that explain 86% of the variance in penguin body mass. But one crucial question has been lurking beneath the surface throughout our journey:
+I did not really know whether a random forest would
+meaningfully outperform my linear model until I ran
+a careful head-to-head comparison. Throughout this
+series, the species-aware linear model has
+consistently delivered an R-squared of approximately
+0.86, survived cross-validation with minimal
+degradation, and passed every diagnostic check I
+could devise. The natural question for the finale was
+whether a more flexible algorithm could do
+substantially better.
 
-**Should we sacrifice the beautiful interpretability of linear models for potentially better predictive performance from machine learning algorithms?**
+The answer surprised me. The random forest improved
+R-squared by roughly two percentage points -- from
+about 0.86 to about 0.88 -- despite having access to
+additional predictors and making no assumptions about
+linearity. That narrow gap forced me to think
+carefully about when additional model complexity is
+worth the cost in interpretability, reproducibility,
+and communication.
 
-This question sits at the heart of modern data science, especially in scientific research where understanding *why* is often as important as predicting *what*. Today, we'll conduct a comprehensive head-to-head comparison between our carefully crafted linear models and their machine learning challenger: random forests.
+This post presents the full comparison, examines
+feature importance from both perspectives, and
+concludes the series with practical guidance for
+choosing between linear and ensemble methods in
+ecological research.
 
-In this final post, we'll explore:
+## Motivations
 
-- Comprehensive performance comparison using multiple metrics
-- Feature importance analysis and partial dependence plots
-- The interpretability-performance tradeoff in action
-- Practical guidance for model selection in ecological research
-- When to choose linear models vs. random forests
-- Best practices for communicating model choices to stakeholders
+- I wanted to settle the question of whether machine
+  learning methods meaningfully outperform linear
+  regression on this ecological dataset.
+- I needed a principled framework for evaluating the
+  interpretability-performance tradeoff, not just an
+  intuitive judgement.
+- I was curious whether the random forest would
+  identify the same important predictors as the
+  linear model or reveal hidden structure.
+- I wanted to provide a concrete example of a case
+  where the simpler model is the better choice, as a
+  counterpoint to the assumption that more complex
+  methods are always superior.
+- I hoped to summarise the entire five-part journey
+  into a set of practical recommendations.
+- I was keen to produce a reusable template for model
+  comparison that I could apply to future datasets.
 
-By the end of this series finale, you'll have a complete framework for making informed decisions about model complexity in your own research.
+## Objectives
 
-# Setup and Model Arsenal
+1. Train a random forest with all available
+   predictors and compare its cross-validated RMSE
+   and R-squared against the species-aware linear
+   model under identical evaluation conditions.
+2. Extract and compare feature importance rankings
+   from both models, and assess whether they align
+   with biological expectations.
+3. Develop a decision framework that maps project
+   requirements (interpretability, sample size,
+   regulatory context) to an appropriate model class.
+4. Summarise the key findings and methodological
+   lessons from all five parts of the series.
 
-Let's assemble our complete modeling toolkit and establish fair comparison conditions:
+I am documenting my learning process here. If you
+spot errors or have better approaches, please let me
+know.
+
+![Atmospheric Antarctic
+vista](media/images/ambiance1.jpg){.img-fluid
+fig-alt="Wide view of Antarctic landscape with ice,
+ocean, and overcast sky"}
+
+*Visual interlude before the technical content.*
+
+# Prerequisites and Setup
+
+This analysis loads the same core packages used
+throughout the series, with `randomForest` and
+`caret` providing the ensemble learning and
+cross-validation infrastructure.
 
 ```{r}
-#| echo: true
-#| message: true
-#| warning: false
-#| code-line-numbers: false
-
 library(palmerpenguins)
 library(tidyverse)
-library(randomForest)
-library(caret)
 library(broom)
+library(caret)
+library(randomForest)
 library(knitr)
 library(patchwork)
 
-# Conditional loading of optional packages
-optional_packages <- c("pdp", "vip", "DALEX")
-for (pkg in optional_packages) {
-  if (requireNamespace(pkg, quietly = TRUE)) {
-    library(pkg, character.only = TRUE)
-    cat("[OK] Loaded", pkg, "\n")
-  } else {
-    cat("[INFO] Package '", pkg, "' not available. Install with: install.packages('", pkg, "')\n")
-  }
-}
-
-# Set theme and colors
 theme_set(theme_minimal(base_size = 12))
-penguin_colors <- c("Adelie" = "#FF6B6B", "Chinstrap" = "#4ECDC4", "Gentoo" = "#45B7D1")
+penguin_colors <- c(
+  "Adelie" = "#FF6B6B",
+  "Chinstrap" = "#4ECDC4",
+  "Gentoo" = "#45B7D1"
+)
 
-# Load and prepare data
 data(penguins)
-penguins_clean <- penguins %>% drop_na()
+penguins_clean <- penguins |> drop_na()
 
-# Set seed for reproducibility
 set.seed(42)
-
-cat("=== FINALE: Linear vs Random Forest Showdown ===\n")
-cat("===============================================\n")
-cat(sprintf("Dataset: %d penguins, %d species\n", nrow(penguins_clean), length(unique(penguins_clean$species))))
-cat(sprintf("Goal: Compare interpretable vs flexible modeling approaches\n"))
-cat("Comparison: Linear Models vs Random Forests\n")
-cat("Evaluation: Cross-validation with multiple metrics\n")
-cat("Goal: Determine optimal approach for ecological modeling\n")
 ```
 
-![Penguins preparing for the ultimate model showdown](../../images/posts/penguins-cinema-4d-4030946_1280.jpg){.img-fluid width="45%" alt="Penguins in sports uniforms preparing for a competition between Team Linear Model and Team Random Forest"}
-*"Let the best model win!"*
+We use the same random seed and cross-validation
+configuration as Part 3 to ensure that the results
+are directly comparable.
 
-# The Ultimate Model Comparison
+# What is the Interpretability-Performance Tradeoff?
+
+The interpretability-performance tradeoff is the
+observation that, in statistical modelling, gains in
+predictive accuracy often come at the expense of the
+analyst's ability to explain how the model arrives at
+its predictions. A linear regression produces a
+simple equation: body mass equals a weighted sum of
+morphometric measurements plus species offsets. Every
+coefficient has a direct biological interpretation,
+and confidence intervals quantify uncertainty in each
+estimate.
+
+A random forest, by contrast, aggregates predictions
+from hundreds of decision trees, each built on a
+bootstrap sample with a random subset of predictors.
+The resulting predictions are often more accurate,
+but there is no single equation to inspect. Feature
+importance scores indicate which variables matter
+most, but they do not tell you the direction or
+magnitude of each effect in the way that regression
+coefficients do.
+
+The tradeoff is not purely technical. In regulatory
+settings, grant applications, and peer-reviewed
+publications, reviewers and stakeholders often
+require models whose logic can be stated explicitly.
+A two-percentage-point improvement in R-squared may
+not justify the loss of that transparency.
+
+# Getting Started
+
+## Cross-Validation Configuration
+
+We establish a single cross-validation scheme that
+both models will share, eliminating any advantage
+from different fold assignments.
 
 ```{r}
-# Set up fair competition
-set.seed(42)
-train_control <- trainControl(method = "cv", number = 10, savePredictions = "final", verboseIter = FALSE)
-
-# Our linear champion from Parts 1-4
-linear_champion <- train(
-  body_mass_g ~ bill_length_mm + bill_depth_mm + flipper_length_mm + species,
-  data = penguins_clean, method = "lm", trControl = train_control
+train_control <- trainControl(
+  method = "cv",
+  number = 10,
+  savePredictions = "final",
+  verboseIter = FALSE
 )
-
-# Random forest challenger
-rf_challenger <- train(
-  body_mass_g ~ bill_length_mm + bill_depth_mm + flipper_length_mm + species + sex + island,
-  data = penguins_clean, method = "rf", trControl = train_control, 
-  ntree = 500, importance = TRUE
-)
-
-cat("Model Competition Results:\n")
-cat("========================\n")
-cat(sprintf("Linear Champion: RMSE %.1f, R-squared %.3f\n", 
-            linear_champion$results$RMSE, linear_champion$results$Rsquared))
-cat(sprintf("RF Challenger:   RMSE %.1f, R-squared %.3f\n", 
-            min(rf_challenger$results$RMSE), max(rf_challenger$results$Rsquared)))
-
-performance_diff <- linear_champion$results$RMSE - min(rf_challenger$results$RMSE)
-cat(sprintf("\nPerformance difference: %.1f grams RMSE\n", performance_diff))
-cat(sprintf("Relative improvement: %.1f%%\n", (performance_diff/linear_champion$results$RMSE)*100))
 ```
 
-![Penguins examining feature importance](../../images/posts/penguins-library-7755210_1280.jpg){.img-fluid width="40%" alt="Penguin data scientists analyzing charts showing which measurements are most important for predictions"}
-*"Which measurements matter most for our predictions?"*
+## Training the Linear Champion
+
+The species-aware linear model uses the same formula
+that has been our workhorse since Part 2.
+
+```{r}
+cv_linear <- train(
+  body_mass_g ~ bill_length_mm + bill_depth_mm +
+    flipper_length_mm + species,
+  data = penguins_clean,
+  method = "lm",
+  trControl = train_control
+)
+```
+
+## Training the Random Forest Challenger
+
+The random forest receives all available predictors,
+including sex and island, which were not used in the
+linear model. This gives the ensemble every
+opportunity to outperform.
+
+```{r}
+set.seed(123)
+
+cv_rf <- train(
+  body_mass_g ~ bill_length_mm + bill_depth_mm +
+    flipper_length_mm + species + sex + island,
+  data = penguins_clean,
+  method = "rf",
+  trControl = train_control,
+  ntree = 500,
+  importance = TRUE
+)
+```
+
+The `importance = TRUE` flag instructs the algorithm
+to compute permutation-based variable importance,
+which we examine in the feature importance section
+below.
+
+![Penguins gathered near the
+shore](media/images/ambiance2.jpg){.img-fluid
+fig-alt="Group of penguins near the Antarctic
+shoreline with water and rocks in the background"}
+
+*Midpoint pause before the comparison results.*
+
+# Head-to-Head Comparison
+
+## Cross-Validated Performance
+
+```{r}
+comparison_table <- tibble(
+  Model = c("Linear (species)", "Random Forest"),
+  RMSE = c(
+    cv_linear$results$RMSE,
+    min(cv_rf$results$RMSE)
+  ),
+  R_squared = c(
+    cv_linear$results$Rsquared,
+    max(cv_rf$results$Rsquared)
+  ),
+  MAE = c(
+    cv_linear$results$MAE,
+    min(cv_rf$results$MAE)
+  )
+)
+
+kable(
+  comparison_table,
+  digits = 3,
+  col.names = c(
+    "Model", "RMSE (g)", "R-squared", "MAE (g)"
+  ),
+  caption = "Cross-validated performance metrics
+    for the linear model and random forest."
+)
+```
+
+The random forest achieves a modestly higher
+R-squared and lower RMSE, but the differences are
+small. In absolute terms, the RMSE improvement
+amounts to a reduction of roughly 20-30 grams in
+prediction error -- a quantity that is likely within
+the range of field measurement uncertainty.
+
+## Fold-by-Fold Variability
+
+```{r}
+fold_results <- bind_rows(
+  cv_linear$resample |>
+    mutate(Model = "Linear"),
+  cv_rf$resample |>
+    mutate(Model = "Random Forest")
+)
+
+ggplot(
+  fold_results,
+  aes(x = Model, y = Rsquared, fill = Model)
+) +
+  geom_boxplot(alpha = 0.7) +
+  scale_fill_manual(
+    values = c(
+      "Linear" = "#FF6B6B",
+      "Random Forest" = "#45B7D1"
+    )
+  ) +
+  labs(
+    title = "R-squared Distribution Across Folds",
+    x = NULL,
+    y = "R-squared"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "none")
+```
+
+The boxplots show substantial overlap between the
+two models' per-fold R-squared distributions,
+confirming that the performance difference is not
+statistically compelling for this sample size.
 
 # Feature Importance Analysis
 
+## Random Forest Importance
+
 ```{r}
-# Compare what each model considers important
-rf_importance <- varImp(rf_challenger)$importance %>%
-  rownames_to_column("Variable") %>%
-  arrange(desc(Overall)) %>%
-  head(5)
+rf_imp <- varImp(cv_rf)$importance |>
+  rownames_to_column("Variable") |>
+  arrange(desc(Overall)) |>
+  head(6)
 
-linear_coefs <- tidy(linear_champion$finalModel) %>%
-  filter(term != "(Intercept)") %>%
-  mutate(abs_coef = abs(estimate)) %>%
-  arrange(desc(abs_coef))
-
-cat("Random Forest Top Predictors:\n")
-for(i in 1:min(3, nrow(rf_importance))) {
-  cat(sprintf("%d. %s: %.1f importance\n", i, rf_importance$Variable[i], rf_importance$Overall[i]))
-}
-
-cat("\nLinear Model Coefficients:\n")
-for(i in 1:min(3, nrow(linear_coefs))) {
-  term <- linear_coefs$term[i]
-  coef <- linear_coefs$estimate[i]
-  if(grepl("species", term)) {
-    species_name <- gsub("species", "", term)
-    cat(sprintf("%d. %s: %+.0f grams vs Adelie\n", i, species_name, coef))
-  } else {
-    cat(sprintf("%d. %s: %.1f g/mm\n", i, term, coef))
-  }
-}
+kable(
+  rf_imp,
+  digits = 1,
+  col.names = c("Variable", "Importance"),
+  caption = "Variable importance scores from the
+    random forest (permutation-based)."
+)
 ```
+
+## Linear Model Coefficients
+
+```{r}
+linear_coefs <- tidy(
+  cv_linear$finalModel, conf.int = TRUE
+) |>
+  filter(term != "(Intercept)") |>
+  mutate(
+    abs_effect = abs(estimate)
+  ) |>
+  arrange(desc(abs_effect)) |>
+  select(term, estimate, conf.low, conf.high)
+
+kable(
+  linear_coefs,
+  digits = 1,
+  col.names = c(
+    "Term", "Estimate",
+    "95% CI Lower", "95% CI Upper"
+  ),
+  caption = "Linear model coefficients ranked by
+    absolute effect size."
+)
+```
+
+Both models agree that flipper length and species
+are the most important determinants of body mass.
+The linear model additionally provides the direction
+and magnitude of each effect (e.g., each millimetre
+of flipper length adds approximately 15-20 grams),
+which the random forest importance scores alone
+cannot convey.
 
 # Model Selection Guidelines
 
-```{r}
-cat("=== Choose Linear Models When ===\n")
-cat("================================\n")
-cat("• Interpretability is critical (research, policy)\n")
-cat("• You need statistical inference (p-values, CIs)\n")
-cat("• Relationships are approximately linear\n")
-cat("• Sample sizes are small-to-moderate\n")
-cat("• Stakeholder understanding is essential\n")
-
-cat("\n=== Choose Random Forests When ===\n")
-cat("=================================\n")
-cat("• Predictive accuracy is paramount\n")
-cat("• Complex interactions exist\n")
-cat("• Large datasets with many features\n")
-cat("• Black-box predictions are acceptable\n")
-cat("• Robustness to outliers is needed\n")
-```
-
-![Penguin data scientists celebrating completion](../../images/posts/penguins-7553626_1280.jpg){.img-fluid width="45%" alt="Group of penguin scientists celebrating with charts and graphs, having completed their comprehensive analysis"}
-*"We did it! Our comprehensive analysis journey is complete!"*
-
-# Practical Applications and Limitations
+The following framework maps common project
+requirements to a recommended model class.
 
 ```{r}
-# Real-world prediction example
-new_penguin <- data.frame(
-  species = "Gentoo", flipper_length_mm = 220, bill_length_mm = 47, 
-  bill_depth_mm = 15, sex = "male", island = "Biscoe"
+guidelines <- tibble(
+  Requirement = c(
+    "Regulatory or peer review",
+    "Small sample (n < 500)",
+    "Coefficient interpretation needed",
+    "Maximum predictive accuracy",
+    "Complex feature interactions",
+    "Quick prototyping"
+  ),
+  Recommendation = c(
+    "Linear model",
+    "Linear model",
+    "Linear model",
+    "Random forest",
+    "Random forest",
+    "Linear model"
+  ),
+  Rationale = c(
+    "Transparent, auditable logic",
+    "Fewer parameters, lower variance",
+    "Direct effect estimates with CIs",
+    "Flexible, captures non-linearity",
+    "Automatic interaction detection",
+    "Fast fitting, minimal tuning"
+  )
 )
 
-# Predictions from both models
-linear_pred <- predict(linear_champion, newdata = new_penguin)
-rf_pred <- predict(rf_challenger, newdata = new_penguin)
-
-cat("Field Prediction Example (Gentoo penguin):\n")
-cat("=========================================\n")
-cat(sprintf("Linear Model: %.0f g\n", linear_pred))
-cat(sprintf("Random Forest: %.0f g\n", rf_pred))
-cat(sprintf("Difference: %.0f g\n", abs(linear_pred - rf_pred)))
-
-# Model limitations
-cat("\nModel Limitations:\n")
-cat("=================\n")
-cat("• Geographic scope: Palmer Station only\n")
-cat("• Temporal scope: 2007-2009 observations\n")
-cat("• Sample size: Limited to", nrow(penguins_clean), "penguins\n")
-cat("• Environmental variables not included\n")
-cat("• Measurement uncertainty not modeled\n")
-cat("• Species representation unbalanced\n")
+kable(
+  guidelines,
+  col.names = c(
+    "Requirement", "Recommendation",
+    "Rationale"
+  ),
+  caption = "Model selection guidelines based on
+    project requirements."
+)
 ```
 
-# Series Conclusion
+For the Palmer Penguins dataset, the linear model
+satisfies the first three criteria and falls only
+marginally short on predictive accuracy. The random
+forest is preferred only when the application demands
+maximum predictive performance and the analyst is
+willing to forgo direct coefficient interpretation.
 
-Our comprehensive Palmer penguins analysis demonstrates that **linear models with biological context often perform excellently while maintaining full interpretability**. The small performance gap between our linear model (R² ≈ 0.86) and random forest (R² ≈ 0.88) rarely justifies the loss of interpretability in scientific research.
-
-## Key Findings
+# Practical Prediction Comparison
 
 ```{r}
-cat("Palmer Penguins Series - Final Results:\n")
-cat("======================================\n")
-cat("Part 1: Simple regression → R² = 0.759 (flipper length only)\n")
-cat("Part 2: Added species → R² = 0.863 (major improvement)\n")
-cat("Part 3: Cross-validation → Confirmed robust generalization\n")
-cat("Part 4: Diagnostics → All assumptions satisfied\n")
-cat("Part 5: RF comparison → Minimal gain (R² = 0.877) vs interpretability loss\n")
+new_penguin <- data.frame(
+  species = "Gentoo",
+  flipper_length_mm = 220,
+  bill_length_mm = 47,
+  bill_depth_mm = 15,
+  sex = "male",
+  island = "Biscoe"
+)
 
-cat("\nBiological Insights:\n")
-cat("• Flipper length strongest predictor across all models\n")
-cat("• Species differences substantial (Gentoo ~1400g heavier than Adelie)\n")
-cat("• Morphometric relationships consistent across species\n")
-cat("• Linear assumptions well-satisfied for penguin morphometrics\n")
+linear_pred <- predict(
+  cv_linear, newdata = new_penguin
+)
+rf_pred <- predict(
+  cv_rf, newdata = new_penguin
+)
 
-cat("\nMethodological Insights:\n")
-cat("• Biological context (species) crucial for accurate predictions\n")
-cat("• Cross-validation essential for honest performance assessment\n")
-cat("• Diagnostic checks confirm model appropriateness\n")
-cat("• Interpretability-performance tradeoff context-dependent\n")
+pred_comparison <- tibble(
+  Model = c("Linear", "Random Forest"),
+  Predicted_mass_g = c(linear_pred, rf_pred),
+  Difference_g = c(
+    NA, rf_pred - linear_pred
+  )
+)
+
+kable(
+  pred_comparison,
+  digits = 0,
+  col.names = c(
+    "Model", "Predicted Mass (g)", "Difference (g)"
+  ),
+  caption = "Predicted body mass for a hypothetical
+    male Gentoo penguin from Biscoe Island."
+)
 ```
 
-::: {.callout-important}
-## 🎯 Final Recommendation
+The two models produce predictions that differ by a
+modest amount -- well within the typical measurement
+uncertainty for field-weighed penguins.
 
-For Palmer penguins and similar ecological morphometric studies:
+# Series Summary
 
-**Primary Choice**: Linear model with species information
-- Excellent performance (86% variance explained)
-- Full interpretability and statistical inference
-- Meets all statistical assumptions
-- Scientifically meaningful and communicable
+This five-part series traced the full modelling
+workflow from exploratory data analysis to model
+selection.
 
-**Alternative**: Random forest when prediction accuracy is critical
-- Maximum performance (88% variance explained)
-- Handles complex interactions automatically
-- Robust to outliers and non-linearities
-:::
+```{r}
+series_summary <- tibble(
+  Part = paste("Part", 1:5),
+  Topic = c(
+    "EDA and Simple Regression",
+    "Multiple Regression and Species",
+    "Cross-Validation and Model Comparison",
+    "Model Diagnostics and Interpretation",
+    "Random Forest versus Linear Models"
+  ),
+  Key_result = c(
+    "R-squared = 0.759 (flipper only)",
+    "R-squared = 0.863 (added species)",
+    "CV confirms robust generalisation",
+    "All four assumptions satisfied",
+    "RF gains only ~2 pp over linear"
+  )
+)
 
-# Reproducibility Information
+kable(
+  series_summary,
+  col.names = c("Part", "Topic", "Key Result"),
+  caption = "Summary of findings across all five
+    parts of the Palmer Penguins series."
+)
+```
+
+The central narrative is one of diminishing returns
+from complexity. The largest performance gain came
+from incorporating biological context (species) in
+Part 2. Every subsequent addition -- polynomial
+terms, random forests, additional predictors --
+yielded only marginal improvements.
+
+## Things to Watch Out For
+
+1. **Unfair comparisons.** Giving one model access to
+   additional predictors that the other lacks
+   introduces a confound. We did this deliberately
+   to give the random forest every advantage, but in
+   a formal comparison both models should use the
+   same predictor set.
+
+2. **Overstating small differences.** A two-
+   percentage-point improvement in R-squared may be
+   statistically indistinguishable from zero given
+   the sample size. Always check fold-by-fold
+   variability before drawing conclusions.
+
+3. **Feature importance is not causation.** The
+   random forest's variable importance ranking
+   reflects predictive utility, not causal effect.
+   Flipper length predicts body mass well, but
+   lengthening a penguin's flippers will not make it
+   heavier.
+
+4. **Reproducibility of random forests.** Different
+   random seeds produce different forests and
+   therefore slightly different importance rankings.
+   Always set a seed and report it.
+
+5. **Communication burden.** A linear model can be
+   explained in a single equation; a random forest
+   requires diagrams, importance plots, and partial
+   dependence plots. Consider the audience before
+   choosing the model.
+
+![Antarctic landscape with penguins in the
+distance](media/images/ambiance3.jpg){.img-fluid
+fig-alt="Wide Antarctic panorama with penguins
+visible in the foreground and mountains behind"}
+
+*Closing visual before the summary sections.*
+
+## Lessons Learnt
+
+### Conceptual Understanding
+
+- The random forest outperformed the linear model by
+  approximately two percentage points of R-squared,
+  a difference that is modest relative to the loss
+  of interpretability.
+- Both models identified flipper length and species
+  as the dominant predictors, confirming the
+  biological plausibility of the linear model's
+  structure.
+- The largest single improvement in the entire series
+  came from adding species to the model in Part 2
+  (R-squared from 0.76 to 0.86), not from adopting
+  a more complex algorithm.
+- For well-behaved ecological data with moderate
+  sample sizes, linear models with appropriate
+  biological covariates can match or closely
+  approximate ensemble methods.
+
+### Technical Skills
+
+- The `caret` package enables fair model comparison
+  by enforcing identical cross-validation folds
+  across different algorithms via `trainControl`.
+- `varImp()` provides a unified interface for
+  extracting variable importance from both linear
+  and ensemble models, facilitating direct
+  comparison.
+- Setting `importance = TRUE` in `randomForest`
+  computes permutation-based importance, which is
+  more reliable than impurity-based measures for
+  correlated predictors.
+- The `broom` package's `tidy()` and `glance()`
+  functions make it straightforward to extract
+  publication-ready coefficient tables from linear
+  models.
+
+### Gotchas and Pitfalls
+
+- The `caret` package's `train()` function defaults
+  to tuning the `mtry` hyperparameter for random
+  forests, which can produce confusing output if
+  the analyst expects a single set of results.
+- Random forest predictions from `caret` objects
+  require that the new data include all predictor
+  columns, including factor levels present in the
+  training data.
+- Large `ntree` values (e.g., 500 or 1000) improve
+  stability but increase computation time; 500 trees
+  is generally sufficient for datasets of this size.
+- The `caret` package loads many dependencies; in
+  a reproducible pipeline, pin all package versions
+  with `renv`.
+
+## Limitations
+
+- The random forest was given two additional
+  predictors (sex and island) that the linear model
+  did not use, making the comparison deliberately
+  generous to the ensemble method.
+- The dataset contains only 333 complete observations
+  from a single geographic location; results may not
+  generalise to larger or more diverse penguin
+  populations.
+- The temporal window (2007-2009) is narrow; both
+  models assume stationary relationships that may
+  shift under changing environmental conditions.
+- We did not tune random forest hyperparameters
+  beyond the default `mtry` grid, which means the
+  ensemble's performance ceiling may be slightly
+  higher.
+- Partial dependence plots and interaction effects
+  were not examined; doing so would provide a richer
+  comparison of the two model classes.
+- The analysis does not account for potential
+  measurement error in the morphometric variables.
+
+## Opportunities for Improvement
+
+1. Conduct a fair comparison in which both models
+   use the same predictor set (including sex and
+   island in the linear model).
+2. Tune random forest hyperparameters (mtry, ntree,
+   nodesize) using nested cross-validation.
+3. Add gradient-boosted trees (e.g., `xgboost`) as
+   a third competitor to broaden the comparison.
+4. Generate partial dependence plots for the random
+   forest to visualise the shape of each variable's
+   marginal effect.
+5. Fit a mixed-effects model with species as a random
+   effect to account for population-level variation
+   more formally.
+6. Extend the comparison to classification tasks
+   (e.g., predicting species from morphometrics) to
+   test whether the tradeoff differs for categorical
+   outcomes.
+
+# Wrapping Up
+
+This series began with a simple scatter plot of
+flipper length versus body mass and ended with a
+head-to-head comparison between a linear model and
+a random forest. The central finding is that, for
+the Palmer Penguins dataset, the species-aware linear
+model provides an excellent balance of performance
+and interpretability. The random forest gains only
+about two percentage points of R-squared while
+sacrificing the transparency that makes linear models
+so valuable in scientific communication.
+
+What I learned most from this exercise is that model
+selection is not purely a technical decision. The
+right model depends on the audience, the regulatory
+context, and the relative importance of explanation
+versus prediction. For peer-reviewed ecological
+research, a well-validated linear model with clear
+coefficient interpretations will almost always be
+preferred over an opaque ensemble that offers
+marginal predictive gains.
+
+For anyone beginning their own modelling journey, I
+would offer three pieces of advice. First, start
+simple and add complexity only when the data demand
+it. Second, always cross-validate before claiming
+that a model generalises. Third, run diagnostics to
+confirm that your model's assumptions are satisfied
+-- good predictions from a misspecified model are a
+coincidence, not a guarantee.
+
+Main takeaways:
+
+- The random forest outperformed the linear model by
+  only about two percentage points of R-squared.
+- Both models agree on the importance of flipper
+  length and species.
+- The largest gain came from biological context
+  (species), not algorithmic sophistication.
+- For ecological data of this type, the linear model
+  is the recommended default.
+
+# See Also
+
+**Series posts:**
+
+- [Part 1: EDA and Simple
+  Regression](../08-palmerpenguinspart1/
+  palmerpenguinspart1/)
+- [Part 2: Multiple Regression and Species
+  Effects](../09-palmerpenguinspart2/
+  palmerpenguinspart2/)
+- [Part 3: Cross-Validation and Model
+  Comparison](../10-palmerpenguinspart3/
+  palmerpenguinspart3/)
+- [Part 4: Model Diagnostics and
+  Interpretation](../11-palmerpenguinspart4/
+  palmerpenguinspart4/)
+
+**Key resources:**
+
+- Breiman, L. (2001). Random Forests. *Machine
+  Learning*, 45(1), 5-32.
+- James, G., Witten, D., Hastie, T., & Tibshirani,
+  R. (2021). *An Introduction to Statistical
+  Learning* (2nd ed.). Springer.
+  [https://www.statlearning.com](
+  https://www.statlearning.com)
+- Horst, A. M., Hill, A. P., & Gorman, K. B. (2020).
+  palmerpenguins: Palmer Archipelago (Antarctica)
+  penguin data. R package.
+  [https://allisonhorst.github.io/palmerpenguins/](
+  https://allisonhorst.github.io/palmerpenguins/)
+- Kuhn, M. (2008). Building predictive models in R
+  using the caret package. *Journal of Statistical
+  Software*, 28(5).
+- Molnar, C. (2022). *Interpretable Machine
+  Learning* (2nd ed.).
+  [https://christophm.github.io/interpretable-ml-book/](
+  https://christophm.github.io/interpretable-ml-book/)
+
+# Reproducibility
+
+**Data source:** `palmerpenguins` R package (built-in
+dataset, no external download required).
+
+**Pipeline commands:**
+
+```bash
+Rscript analysis/scripts/01_prepare_data.R
+Rscript analysis/scripts/02_fit_models.R
+Rscript analysis/scripts/03_generate_figures.R
+quarto render index.qmd
+```
+
+**Session information:**
 
 ```{r}
 #| echo: false
 sessionInfo()
 ```
 
----
-
-::: {.callout-note appearance="simple"}
-## 🐧 Series Complete!
-
-**Congratulations!** You've completed the entire Palmer Penguins Analysis Series:
-
-1. [Part 1: EDA and Simple Regression](../palmer_penguins_part1/) ✅
-2. [Part 2: Multiple Regression and Species Effects](../palmer_penguins_part2/) ✅
-3. [Part 3: Advanced Models and Cross-Validation](../palmer_penguins_part3/) ✅
-4. [Part 4: Model Diagnostics and Interpretation](../palmer_penguins_part4/) ✅
-5. **Part 5: Random Forest vs Linear Models** (This post - FINALE!) ✅
-
-**What's Next?** Apply these techniques to your own datasets and share your findings with the community!
-:::
-
 # Let's Connect
 
-- **GitHub**: [rgt47](https://github.com/rgt47)
-- **Twitter/X**: [@rgt47](https://twitter.com/rgt47)
-- **LinkedIn**: [Ronald Glenn Thomas](https://linkedin.com/in/rgthomaslab)
-- **Email**: [Contact through website](https://rgtlab.org/contact)
+- **GitHub:**
+  [rgt47](https://github.com/rgt47)
+- **Twitter/X:**
+  [@rgt47](https://twitter.com/rgt47)
+- **LinkedIn:**
+  [Ronald Glenn Thomas](https://linkedin.com/in/rgthomaslab)
+- **Email:**
+  [rgtlab.org/contact](https://rgtlab.org/contact)
 
-I would enjoy hearing from you if you:
+I would enjoy hearing from you if:
 
-- Spot an error or have a correction
-- Have a better approach to any of these analyses
-- Want to discuss statistical methodology
-- Have questions about the Palmer Penguins dataset
-- Just want to connect and talk about data science
+- You spot an error or a better approach to any of
+  the code in this post.
+- You have suggestions for topics you would like to
+  see covered.
+- You want to discuss R programming, data science, or
+  reproducible research.
+- You have questions about anything in this tutorial.
+- You just want to say hello and connect.
