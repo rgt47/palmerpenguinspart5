@@ -18,6 +18,7 @@ document-type: "blog"
 draft: true
 execute:
   echo: true
+  eval: false
   warning: false
   message: false
 format:
