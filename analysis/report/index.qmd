@@ -6,7 +6,7 @@ subtitle: >
   in ecological modelling
 author: "Ronald G. Thomas"
 date: "2025-01-05"
-categories:
+categories: [r, palmer-penguins, random-forest, machine-learning, model-selection]
   [R Programming, Data Science, Statistical Computing]
 description: >
   I did not really know whether a random forest would
