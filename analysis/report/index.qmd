@@ -8,10 +8,10 @@ author: "Ronald G. Thomas"
 date: "2025-01-05"
 categories: [r, palmer-penguins, random-forest, machine-learning, model-selection]
 description: >
-  I did not really know whether a random forest would
-  meaningfully outperform my linear model until I ran
-  a head-to-head comparison and found the gap was only
-  two percentage points.
+  A head-to-head comparison reveals that a random
+  forest outperforms the linear model by only two
+  percentage points, prompting reflection on the
+  interpretability-performance tradeoff.
 image: "media/images/hero.jpg"
 document-type: "blog"
 draft: true
@@ -60,23 +60,22 @@ exploring penguin morphometrics:
 
 # Introduction
 
-I did not really know whether a random forest would
-meaningfully outperform my linear model until I ran
-a careful head-to-head comparison. Throughout this
-series, the species-aware linear model has
-consistently delivered an R-squared of approximately
-0.86, survived cross-validation with minimal
-degradation, and passed every diagnostic check I
-could devise. The natural question for the finale was
-whether a more flexible algorithm could do
-substantially better.
+Whether a random forest meaningfully outperforms a
+linear model remains unclear until a careful head-to-
+head comparison is conducted. Throughout this series,
+the species-aware linear model has consistently
+delivered an R-squared of approximately 0.86,
+survived cross-validation with minimal degradation,
+and passed every diagnostic check devised. The
+natural question for the finale was whether a more
+flexible algorithm could do substantially better.
 
-The answer surprised me. The random forest improved
-R-squared by roughly two percentage points -- from
-about 0.86 to about 0.88 -- despite having access to
-additional predictors and making no assumptions about
-linearity. That narrow gap forced me to think
-carefully about when additional model complexity is
+The answer is somewhat unexpected. The random forest
+improved R-squared by roughly two percentage points,
+from about 0.86 to about 0.88, despite having access
+to additional predictors and making no assumptions
+about linearity. That narrow gap prompts careful
+reflection on when additional model complexity is
 worth the cost in interpretability, reproducibility,
 and communication.
 
@@ -88,23 +87,23 @@ ecological research.
 
 ## Motivations
 
-- I wanted to settle the question of whether machine
-  learning methods meaningfully outperform linear
-  regression on this ecological dataset.
-- I needed a principled framework for evaluating the
-  interpretability-performance tradeoff, not just an
-  intuitive judgement.
-- I was curious whether the random forest would
-  identify the same important predictors as the
-  linear model or reveal hidden structure.
-- I wanted to provide a concrete example of a case
-  where the simpler model is the better choice, as a
+- To settle the question of whether machine learning
+  methods meaningfully outperform linear regression on
+  this ecological dataset.
+- To establish a principled framework for evaluating
+  the interpretability-performance tradeoff, not just
+  an intuitive judgement.
+- To determine whether the random forest identifies
+  the same important predictors as the linear model or
+  reveals hidden structure.
+- To provide a concrete example of a case where the
+  simpler model is the better choice, as a
   counterpoint to the assumption that more complex
   methods are always superior.
-- I hoped to summarise the entire five-part journey
-  into a set of practical recommendations.
-- I was keen to produce a reusable template for model
-  comparison that I could apply to future datasets.
+- To summarise the entire five-part journey into a set
+  of practical recommendations.
+- To produce a reusable template for model comparison
+  applicable to future datasets.
 
 ## Objectives
 
@@ -121,9 +120,8 @@ ecological research.
 4. Summarise the key findings and methodological
    lessons from all five parts of the series.
 
-I am documenting my learning process here. If you
-spot errors or have better approaches, please let me
-know.
+Errors and better approaches are welcome; see the
+Feedback section at the end.
 
 ![](media/images/r-logo.png){.img-fluid width=30% fig-align="center"}
 
@@ -293,7 +291,7 @@ The random forest achieves a modestly higher
 R-squared and lower RMSE, but the differences are
 small. In absolute terms, the RMSE improvement
 amounts to a reduction of roughly 20-30 grams in
-prediction error -- a quantity that is likely within
+prediction error, a quantity that is likely within
 the range of field measurement uncertainty.
 
 ## Fold-by-Fold Variability
@@ -473,7 +471,7 @@ kable(
 ```
 
 The two models produce predictions that differ by a
-modest amount -- well within the typical measurement
+modest amount, well within the typical measurement
 uncertainty for field-weighed penguins.
 
 # Series Summary
@@ -512,8 +510,8 @@ kable(
 The central narrative is one of diminishing returns
 from complexity. The largest performance gain came
 from incorporating biological context (species) in
-Part 2. Every subsequent addition -- polynomial
-terms, random forests, additional predictors --
+Part 2. Every subsequent addition (polynomial
+terms, random forests, additional predictors)
 yielded only marginal improvements.
 
 ## Things to Watch Out For
@@ -668,7 +666,7 @@ about two percentage points of R-squared while
 sacrificing the transparency that makes linear models
 so valuable in scientific communication.
 
-What I learned most from this exercise is that model
+The principal lesson from this exercise is that model
 selection is not purely a technical decision. The
 right model depends on the audience, the regulatory
 context, and the relative importance of explanation
@@ -678,13 +676,13 @@ coefficient interpretations will almost always be
 preferred over an opaque ensemble that offers
 marginal predictive gains.
 
-For anyone beginning their own modelling journey, I
-would offer three pieces of advice. First, start
-simple and add complexity only when the data demand
-it. Second, always cross-validate before claiming
-that a model generalises. Third, run diagnostics to
-confirm that your model's assumptions are satisfied
--- good predictions from a misspecified model are a
+For anyone beginning a modelling journey, three
+pieces of advice are offered. First, start simple and
+add complexity only when the data demand it. Second,
+always cross-validate before claiming that a model
+generalises. Third, run diagnostics to confirm that
+the model's assumptions are satisfied; good
+predictions from a misspecified model are a
 coincidence, not a guarantee.
 
 Main takeaways:
@@ -758,24 +756,9 @@ quarto render index.qmd
 sessionInfo()
 ```
 
-# Let's Connect
+# Feedback
 
-- **GitHub:**
-  [rgt47](https://github.com/rgt47)
-- **Twitter/X:**
-  [@rgt47](https://twitter.com/rgt47)
-- **LinkedIn:**
-  [Ronald Glenn Thomas](https://linkedin.com/in/rgthomaslab)
-- **Email:**
-  [rgtlab.org/contact](https://rgtlab.org/contact)
-
-I would enjoy hearing from you if:
-
-- You spot an error or a better approach to any of
-  the code in this post.
-- You have suggestions for topics you would like to
-  see covered.
-- You want to discuss R programming, data science, or
-  reproducible research.
-- You have questions about anything in this tutorial.
-- You just want to say hello and connect.
+Corrections, suggestions, and questions are welcome.
+Please open an issue or pull request on the
+[GitHub repository](https://github.com/mygit)
+or send an email to user@example.com.
