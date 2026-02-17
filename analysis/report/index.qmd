@@ -7,7 +7,6 @@ subtitle: >
 author: "Ronald G. Thomas"
 date: "2025-01-05"
 categories: [r, palmer-penguins, random-forest, machine-learning, model-selection]
-  [R Programming, Data Science, Statistical Computing]
 description: >
   I did not really know whether a random forest would
   meaningfully outperform my linear model until I ran
