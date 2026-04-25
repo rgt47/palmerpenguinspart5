@@ -1,0 +1,1055 @@
+% Options for packages loaded elsewhere
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
+%
+\documentclass[
+  letterpaper,
+  DIV=11,
+  numbers=noendperiod]{scrartcl}
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\setcounter{secnumdepth}{5}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+  \setmonofont[]{DejaVu Sans Mono}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+% Make \paragraph and \subparagraph free-standing
+\makeatletter
+\ifx\paragraph\undefined\else
+  \let\oldparagraph\paragraph
+  \renewcommand{\paragraph}{
+    \@ifstar
+      \xxxParagraphStar
+      \xxxParagraphNoStar
+  }
+  \newcommand{\xxxParagraphStar}[1]{\oldparagraph*{#1}\mbox{}}
+  \newcommand{\xxxParagraphNoStar}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+  \let\oldsubparagraph\subparagraph
+  \renewcommand{\subparagraph}{
+    \@ifstar
+      \xxxSubParagraphStar
+      \xxxSubParagraphNoStar
+  }
+  \newcommand{\xxxSubParagraphStar}[1]{\oldsubparagraph*{#1}\mbox{}}
+  \newcommand{\xxxSubParagraphNoStar}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+\makeatother
+
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{241,243,245}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.40,0.45,0.13}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\BuiltInTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.13,0.47,0.30}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{\textit{#1}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{\textit{#1}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\ExtensionTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.28,0.35,0.67}{#1}}
+\newcommand{\ImportTok}[1]{\textcolor[rgb]{0.00,0.46,0.62}{#1}}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\RegionMarkerTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.13,0.47,0.30}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.13,0.47,0.30}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.07,0.07,0.07}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.13,0.47,0.30}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{\textit{#1}}}
+
+\usepackage{longtable,booktabs,array}
+\newcounter{none} % for unnumbered tables
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\newsavebox\pandoc@box
+\newcommand*\pandocbounded[1]{% scales image to fit in text height/width
+  \sbox\pandoc@box{#1}%
+  \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+  \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
+  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi% select the smaller of both
+  \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
+  \else\usebox{\pandoc@box}%
+  \fi%
+}
+% Set default figure placement to htbp
+\def\fps@figure{htbp}
+\makeatother
+
+
+
+
+
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+
+
+ 
+
+
+\KOMAoption{captions}{tableheading}
+\makeatletter
+\@ifpackageloaded{tcolorbox}{}{\usepackage[skins,breakable]{tcolorbox}}
+\@ifpackageloaded{fontawesome5}{}{\usepackage{fontawesome5}}
+\definecolor{quarto-callout-color}{HTML}{909090}
+\definecolor{quarto-callout-note-color}{HTML}{0758E5}
+\definecolor{quarto-callout-important-color}{HTML}{CC1914}
+\definecolor{quarto-callout-warning-color}{HTML}{EB9113}
+\definecolor{quarto-callout-tip-color}{HTML}{00A047}
+\definecolor{quarto-callout-caution-color}{HTML}{FC5300}
+\definecolor{quarto-callout-color-frame}{HTML}{acacac}
+\definecolor{quarto-callout-note-color-frame}{HTML}{4582ec}
+\definecolor{quarto-callout-important-color-frame}{HTML}{d9534f}
+\definecolor{quarto-callout-warning-color-frame}{HTML}{f0ad4e}
+\definecolor{quarto-callout-tip-color-frame}{HTML}{02b875}
+\definecolor{quarto-callout-caution-color-frame}{HTML}{fd7e14}
+\makeatother
+\makeatletter
+\@ifpackageloaded{caption}{}{\usepackage{caption}}
+\AtBeginDocument{%
+\ifdefined\contentsname
+  \renewcommand*\contentsname{Table of contents}
+\else
+  \newcommand\contentsname{Table of contents}
+\fi
+\ifdefined\listfigurename
+  \renewcommand*\listfigurename{List of Figures}
+\else
+  \newcommand\listfigurename{List of Figures}
+\fi
+\ifdefined\listtablename
+  \renewcommand*\listtablename{List of Tables}
+\else
+  \newcommand\listtablename{List of Tables}
+\fi
+\ifdefined\figurename
+  \renewcommand*\figurename{Figure}
+\else
+  \newcommand\figurename{Figure}
+\fi
+\ifdefined\tablename
+  \renewcommand*\tablename{Table}
+\else
+  \newcommand\tablename{Table}
+\fi
+}
+\@ifpackageloaded{float}{}{\usepackage{float}}
+\floatstyle{ruled}
+\@ifundefined{c@chapter}{\newfloat{codelisting}{h}{lop}}{\newfloat{codelisting}{h}{lop}[chapter]}
+\floatname{codelisting}{Listing}
+\newcommand*\listoflistings{\listof{codelisting}{List of Listings}}
+\makeatother
+\makeatletter
+\makeatother
+\makeatletter
+\@ifpackageloaded{caption}{}{\usepackage{caption}}
+\@ifpackageloaded{subcaption}{}{\usepackage{subcaption}}
+\makeatother
+\makeatletter
+\@ifpackageloaded{tcolorbox}{}{\usepackage[skins,breakable]{tcolorbox}}
+\makeatother
+\makeatletter
+\@ifundefined{shadecolor}{\definecolor{shadecolor}{rgb}{.97, .97, .97}}{}
+\makeatother
+\makeatletter
+\makeatother
+\makeatletter
+\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[boxrule=0pt, breakable, enhanced, frame hidden, interior hidden, sharp corners]}{\end{tcolorbox}}\fi
+\makeatother
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={Palmer Penguins Part 5: Random Forest versus Linear Models},
+  pdfauthor={Ronald `Ryy' G. Thomas},
+  colorlinks=true,
+  linkcolor={blue},
+  filecolor={Maroon},
+  citecolor={Blue},
+  urlcolor={Blue},
+  pdfcreator={LaTeX via pandoc}}
+
+
+\title{Palmer Penguins Part 5: Random Forest versus Linear Models}
+\usepackage{etoolbox}
+\makeatletter
+\providecommand{\subtitle}[1]{% add subtitle to \maketitle
+  \apptocmd{\@title}{\par {\large #1 \par}}{}{}
+}
+\makeatother
+\subtitle{Settling the interpretability-performance tradeoff in
+ecological modelling}
+\author{Ronald `Ryy' G. Thomas}
+\date{2025-01-05}
+\begin{document}
+\maketitle
+
+\renewcommand*\contentsname{Table of contents}
+{
+\setcounter{tocdepth}{3}
+\tableofcontents
+}
+
+\begin{figure}[H]
+
+{\centering \includegraphics[width=0.8\linewidth,height=\textheight,keepaspectratio,alt={Group of penguins standing on rocky Antarctic terrain with the ocean and sky in the background}]{media/images/hero.jpg}
+
+}
+
+\caption{Penguins on rocky Antarctic terrain}
+
+\end{figure}%
+
+\emph{Palmer Penguins series, Part 5 (finale). Photo used under open
+licence.}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, breakable, colback=white, colframe=quarto-callout-note-color-frame, left=2mm, leftrule=.75mm, opacityback=0, rightrule=.15mm, toprule=.15mm]
+\begin{minipage}[t]{5.5mm}
+\textcolor{quarto-callout-note-color}{\faInfo}
+\end{minipage}%
+\begin{minipage}[t]{\textwidth - 5.5mm}
+
+\vspace{-3mm}\textbf{Palmer Penguins Data Analysis Series}\vspace{3mm}
+
+This is \textbf{Part 5} (finale) of a 5-part series exploring penguin
+morphometrics:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \href{../08-palmerpenguinspart1/\%20palmerpenguinspart1/}{Part 1: EDA
+  and Simple Regression}
+\item
+  \href{../09-palmerpenguinspart2/\%20palmerpenguinspart2/}{Part 2:
+  Multiple Regression and Species Effects}
+\item
+  \href{../10-palmerpenguinspart3/\%20palmerpenguinspart3/}{Part 3:
+  Cross-Validation and Model Comparison}
+\item
+  \href{../11-palmerpenguinspart4/\%20palmerpenguinspart4/}{Part 4:
+  Model Diagnostics and Interpretation}
+\item
+  \textbf{Part 5: Random Forest versus Linear Models} (this post)
+\end{enumerate}
+
+\end{minipage}%
+\end{tcolorbox}
+
+\section{Introduction}\label{introduction}
+
+Whether a random forest meaningfully outperforms a linear model remains
+unclear until a careful head-to- head comparison is conducted.
+Throughout this series, the species-aware linear model has consistently
+delivered an R-squared of approximately 0.86, survived cross-validation
+with minimal degradation, and passed every diagnostic check devised. The
+natural question for the finale was whether a more flexible algorithm
+could do substantially better.
+
+The answer is somewhat unexpected. The random forest improved R-squared
+by roughly two percentage points, from about 0.86 to about 0.88, despite
+having access to additional predictors and making no assumptions about
+linearity. That narrow gap prompts careful reflection on when additional
+model complexity is worth the cost in interpretability, reproducibility,
+and communication.
+
+This post presents the full comparison, examines feature importance from
+both perspectives, and concludes the series with practical guidance for
+choosing between linear and ensemble methods in ecological research.
+
+\subsection{Motivations}\label{motivations}
+
+\begin{itemize}
+\tightlist
+\item
+  To settle the question of whether machine learning methods
+  meaningfully outperform linear regression on this ecological dataset.
+\item
+  To establish a principled framework for evaluating the
+  interpretability-performance tradeoff, not just an intuitive
+  judgement.
+\item
+  To determine whether the random forest identifies the same important
+  predictors as the linear model or reveals hidden structure.
+\item
+  To provide a concrete example of a case where the simpler model is the
+  better choice, as a counterpoint to the assumption that more complex
+  methods are always superior.
+\item
+  To summarise the entire five-part journey into a set of practical
+  recommendations.
+\item
+  To produce a reusable template for model comparison applicable to
+  future datasets.
+\end{itemize}
+
+\subsection{Objectives}\label{objectives}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Train a random forest with all available predictors and compare its
+  cross-validated RMSE and R-squared against the species-aware linear
+  model under identical evaluation conditions.
+\item
+  Extract and compare feature importance rankings from both models, and
+  assess whether they align with biological expectations.
+\item
+  Develop a decision framework that maps project requirements
+  (interpretability, sample size, regulatory context) to an appropriate
+  model class.
+\item
+  Summarise the key findings and methodological lessons from all five
+  parts of the series.
+\end{enumerate}
+
+Errors and better approaches are welcome; see the Feedback section at
+the end.
+
+\begin{center}
+\includegraphics[width=0.3\linewidth,height=\textheight,keepaspectratio]{media/images/r-logo.png}
+\end{center}
+
+\emph{Visual interlude before the technical content.}
+
+\section{Prerequisites and Setup}\label{prerequisites-and-setup}
+
+This analysis loads the same core packages used throughout the series,
+with \texttt{randomForest} and \texttt{caret} providing the ensemble
+learning and cross-validation infrastructure.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(palmerpenguins)}
+\FunctionTok{library}\NormalTok{(tidyverse)}
+\FunctionTok{library}\NormalTok{(broom)}
+\FunctionTok{library}\NormalTok{(caret)}
+\FunctionTok{library}\NormalTok{(randomForest)}
+\FunctionTok{library}\NormalTok{(knitr)}
+\FunctionTok{library}\NormalTok{(patchwork)}
+
+\FunctionTok{theme\_set}\NormalTok{(}\FunctionTok{theme\_minimal}\NormalTok{(}\AttributeTok{base\_size =} \DecValTok{12}\NormalTok{))}
+\NormalTok{penguin\_colors }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}
+  \StringTok{"Adelie"} \OtherTok{=} \StringTok{"\#FF6B6B"}\NormalTok{,}
+  \StringTok{"Chinstrap"} \OtherTok{=} \StringTok{"\#4ECDC4"}\NormalTok{,}
+  \StringTok{"Gentoo"} \OtherTok{=} \StringTok{"\#45B7D1"}
+\NormalTok{)}
+
+\FunctionTok{data}\NormalTok{(penguins)}
+\NormalTok{penguins\_clean }\OtherTok{\textless{}{-}}\NormalTok{ penguins }\SpecialCharTok{|\textgreater{}} \FunctionTok{drop\_na}\NormalTok{()}
+
+\FunctionTok{set.seed}\NormalTok{(}\DecValTok{42}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+We use the same random seed and cross-validation configuration as Part 3
+to ensure that the results are directly comparable.
+
+\section{What is the Interpretability-Performance
+Tradeoff?}\label{what-is-the-interpretability-performance-tradeoff}
+
+The interpretability-performance tradeoff is the observation that, in
+statistical modelling, gains in predictive accuracy often come at the
+expense of the analyst's ability to explain how the model arrives at its
+predictions. A linear regression produces a simple equation: body mass
+equals a weighted sum of morphometric measurements plus species offsets.
+Every coefficient has a direct biological interpretation, and confidence
+intervals quantify uncertainty in each estimate.
+
+A random forest, by contrast, aggregates predictions from hundreds of
+decision trees, each built on a bootstrap sample with a random subset of
+predictors. The resulting predictions are often more accurate, but there
+is no single equation to inspect. Feature importance scores indicate
+which variables matter most, but they do not tell you the direction or
+magnitude of each effect in the way that regression coefficients do.
+
+The tradeoff is not purely technical. In regulatory settings, grant
+applications, and peer-reviewed publications, reviewers and stakeholders
+often require models whose logic can be stated explicitly. A
+two-percentage-point improvement in R-squared may not justify the loss
+of that transparency.
+
+\section{Getting Started}\label{getting-started}
+
+\subsection{Cross-Validation
+Configuration}\label{cross-validation-configuration}
+
+We establish a single cross-validation scheme that both models will
+share, eliminating any advantage from different fold assignments.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{train\_control }\OtherTok{\textless{}{-}} \FunctionTok{trainControl}\NormalTok{(}
+  \AttributeTok{method =} \StringTok{"cv"}\NormalTok{,}
+  \AttributeTok{number =} \DecValTok{10}\NormalTok{,}
+  \AttributeTok{savePredictions =} \StringTok{"final"}\NormalTok{,}
+  \AttributeTok{verboseIter =} \ConstantTok{FALSE}
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Training the Linear
+Champion}\label{training-the-linear-champion}
+
+The species-aware linear model uses the same formula that has been our
+workhorse since Part 2.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{cv\_linear }\OtherTok{\textless{}{-}} \FunctionTok{train}\NormalTok{(}
+\NormalTok{  body\_mass\_g }\SpecialCharTok{\textasciitilde{}}\NormalTok{ bill\_length\_mm }\SpecialCharTok{+}\NormalTok{ bill\_depth\_mm }\SpecialCharTok{+}
+\NormalTok{    flipper\_length\_mm }\SpecialCharTok{+}\NormalTok{ species,}
+  \AttributeTok{data =}\NormalTok{ penguins\_clean,}
+  \AttributeTok{method =} \StringTok{"lm"}\NormalTok{,}
+  \AttributeTok{trControl =}\NormalTok{ train\_control}
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Training the Random Forest
+Challenger}\label{training-the-random-forest-challenger}
+
+The random forest receives all available predictors, including sex and
+island, which were not used in the linear model. This gives the ensemble
+every opportunity to outperform.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{set.seed}\NormalTok{(}\DecValTok{123}\NormalTok{)}
+
+\NormalTok{cv\_rf }\OtherTok{\textless{}{-}} \FunctionTok{train}\NormalTok{(}
+\NormalTok{  body\_mass\_g }\SpecialCharTok{\textasciitilde{}}\NormalTok{ bill\_length\_mm }\SpecialCharTok{+}\NormalTok{ bill\_depth\_mm }\SpecialCharTok{+}
+\NormalTok{    flipper\_length\_mm }\SpecialCharTok{+}\NormalTok{ species }\SpecialCharTok{+}\NormalTok{ sex }\SpecialCharTok{+}\NormalTok{ island,}
+  \AttributeTok{data =}\NormalTok{ penguins\_clean,}
+  \AttributeTok{method =} \StringTok{"rf"}\NormalTok{,}
+  \AttributeTok{trControl =}\NormalTok{ train\_control,}
+  \AttributeTok{ntree =} \DecValTok{500}\NormalTok{,}
+  \AttributeTok{importance =} \ConstantTok{TRUE}
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+The \texttt{importance\ =\ TRUE} flag instructs the algorithm to compute
+permutation-based variable importance, which we examine in the feature
+importance section below.
+
+\begin{figure}[H]
+
+{\centering \pandocbounded{\includegraphics[keepaspectratio,alt={Group of penguins near the Antarctic shoreline with water and rocks in the background}]{media/images/ambiance2.jpg}}
+
+}
+
+\caption{Penguins gathered near the shore}
+
+\end{figure}%
+
+\emph{Midpoint pause before the comparison results.}
+
+\section{Head-to-Head Comparison}\label{head-to-head-comparison}
+
+\subsection{Cross-Validated
+Performance}\label{cross-validated-performance}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{comparison\_table }\OtherTok{\textless{}{-}} \FunctionTok{tibble}\NormalTok{(}
+  \AttributeTok{Model =} \FunctionTok{c}\NormalTok{(}\StringTok{"Linear (species)"}\NormalTok{, }\StringTok{"Random Forest"}\NormalTok{),}
+  \AttributeTok{RMSE =} \FunctionTok{c}\NormalTok{(}
+\NormalTok{    cv\_linear}\SpecialCharTok{$}\NormalTok{results}\SpecialCharTok{$}\NormalTok{RMSE,}
+    \FunctionTok{min}\NormalTok{(cv\_rf}\SpecialCharTok{$}\NormalTok{results}\SpecialCharTok{$}\NormalTok{RMSE)}
+\NormalTok{  ),}
+  \AttributeTok{R\_squared =} \FunctionTok{c}\NormalTok{(}
+\NormalTok{    cv\_linear}\SpecialCharTok{$}\NormalTok{results}\SpecialCharTok{$}\NormalTok{Rsquared,}
+    \FunctionTok{max}\NormalTok{(cv\_rf}\SpecialCharTok{$}\NormalTok{results}\SpecialCharTok{$}\NormalTok{Rsquared)}
+\NormalTok{  ),}
+  \AttributeTok{MAE =} \FunctionTok{c}\NormalTok{(}
+\NormalTok{    cv\_linear}\SpecialCharTok{$}\NormalTok{results}\SpecialCharTok{$}\NormalTok{MAE,}
+    \FunctionTok{min}\NormalTok{(cv\_rf}\SpecialCharTok{$}\NormalTok{results}\SpecialCharTok{$}\NormalTok{MAE)}
+\NormalTok{  )}
+\NormalTok{)}
+
+\FunctionTok{kable}\NormalTok{(}
+\NormalTok{  comparison\_table,}
+  \AttributeTok{digits =} \DecValTok{3}\NormalTok{,}
+  \AttributeTok{col.names =} \FunctionTok{c}\NormalTok{(}
+    \StringTok{"Model"}\NormalTok{, }\StringTok{"RMSE (g)"}\NormalTok{, }\StringTok{"R{-}squared"}\NormalTok{, }\StringTok{"MAE (g)"}
+\NormalTok{  ),}
+  \AttributeTok{caption =} \StringTok{"Cross{-}validated performance metrics}
+\StringTok{    for the linear model and random forest."}
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+The random forest achieves a modestly higher R-squared and lower RMSE,
+but the differences are small. In absolute terms, the RMSE improvement
+amounts to a reduction of roughly 20-30 grams in prediction error, a
+quantity that is likely within the range of field measurement
+uncertainty.
+
+\subsection{Fold-by-Fold Variability}\label{fold-by-fold-variability}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{fold\_results }\OtherTok{\textless{}{-}} \FunctionTok{bind\_rows}\NormalTok{(}
+\NormalTok{  cv\_linear}\SpecialCharTok{$}\NormalTok{resample }\SpecialCharTok{|\textgreater{}}
+    \FunctionTok{mutate}\NormalTok{(}\AttributeTok{Model =} \StringTok{"Linear"}\NormalTok{),}
+\NormalTok{  cv\_rf}\SpecialCharTok{$}\NormalTok{resample }\SpecialCharTok{|\textgreater{}}
+    \FunctionTok{mutate}\NormalTok{(}\AttributeTok{Model =} \StringTok{"Random Forest"}\NormalTok{)}
+\NormalTok{)}
+
+\FunctionTok{ggplot}\NormalTok{(}
+\NormalTok{  fold\_results,}
+  \FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ Model, }\AttributeTok{y =}\NormalTok{ Rsquared, }\AttributeTok{fill =}\NormalTok{ Model)}
+\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{geom\_boxplot}\NormalTok{(}\AttributeTok{alpha =} \FloatTok{0.7}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{scale\_fill\_manual}\NormalTok{(}
+    \AttributeTok{values =} \FunctionTok{c}\NormalTok{(}
+      \StringTok{"Linear"} \OtherTok{=} \StringTok{"\#FF6B6B"}\NormalTok{,}
+      \StringTok{"Random Forest"} \OtherTok{=} \StringTok{"\#45B7D1"}
+\NormalTok{    )}
+\NormalTok{  ) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}
+    \AttributeTok{title =} \StringTok{"R{-}squared Distribution Across Folds"}\NormalTok{,}
+    \AttributeTok{x =} \ConstantTok{NULL}\NormalTok{,}
+    \AttributeTok{y =} \StringTok{"R{-}squared"}
+\NormalTok{  ) }\SpecialCharTok{+}
+  \FunctionTok{theme\_minimal}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{theme}\NormalTok{(}\AttributeTok{legend.position =} \StringTok{"none"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+The boxplots show substantial overlap between the two models' per-fold
+R-squared distributions, confirming that the performance difference is
+not statistically compelling for this sample size.
+
+\section{Feature Importance Analysis}\label{feature-importance-analysis}
+
+\subsection{Random Forest Importance}\label{random-forest-importance}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{rf\_imp }\OtherTok{\textless{}{-}} \FunctionTok{varImp}\NormalTok{(cv\_rf)}\SpecialCharTok{$}\NormalTok{importance }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{rownames\_to\_column}\NormalTok{(}\StringTok{"Variable"}\NormalTok{) }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{arrange}\NormalTok{(}\FunctionTok{desc}\NormalTok{(Overall)) }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{head}\NormalTok{(}\DecValTok{6}\NormalTok{)}
+
+\FunctionTok{kable}\NormalTok{(}
+\NormalTok{  rf\_imp,}
+  \AttributeTok{digits =} \DecValTok{1}\NormalTok{,}
+  \AttributeTok{col.names =} \FunctionTok{c}\NormalTok{(}\StringTok{"Variable"}\NormalTok{, }\StringTok{"Importance"}\NormalTok{),}
+  \AttributeTok{caption =} \StringTok{"Variable importance scores from the}
+\StringTok{    random forest (permutation{-}based)."}
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Linear Model Coefficients}\label{linear-model-coefficients}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{linear\_coefs }\OtherTok{\textless{}{-}} \FunctionTok{tidy}\NormalTok{(}
+\NormalTok{  cv\_linear}\SpecialCharTok{$}\NormalTok{finalModel, }\AttributeTok{conf.int =} \ConstantTok{TRUE}
+\NormalTok{) }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{filter}\NormalTok{(term }\SpecialCharTok{!=} \StringTok{"(Intercept)"}\NormalTok{) }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{mutate}\NormalTok{(}
+    \AttributeTok{abs\_effect =} \FunctionTok{abs}\NormalTok{(estimate)}
+\NormalTok{  ) }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{arrange}\NormalTok{(}\FunctionTok{desc}\NormalTok{(abs\_effect)) }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{select}\NormalTok{(term, estimate, conf.low, conf.high)}
+
+\FunctionTok{kable}\NormalTok{(}
+\NormalTok{  linear\_coefs,}
+  \AttributeTok{digits =} \DecValTok{1}\NormalTok{,}
+  \AttributeTok{col.names =} \FunctionTok{c}\NormalTok{(}
+    \StringTok{"Term"}\NormalTok{, }\StringTok{"Estimate"}\NormalTok{,}
+    \StringTok{"95\% CI Lower"}\NormalTok{, }\StringTok{"95\% CI Upper"}
+\NormalTok{  ),}
+  \AttributeTok{caption =} \StringTok{"Linear model coefficients ranked by}
+\StringTok{    absolute effect size."}
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Both models agree that flipper length and species are the most important
+determinants of body mass. The linear model additionally provides the
+direction and magnitude of each effect (e.g., each millimetre of flipper
+length adds approximately 15-20 grams), which the random forest
+importance scores alone cannot convey.
+
+\section{Model Selection Guidelines}\label{model-selection-guidelines}
+
+The following framework maps common project requirements to a
+recommended model class.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{guidelines }\OtherTok{\textless{}{-}} \FunctionTok{tibble}\NormalTok{(}
+  \AttributeTok{Requirement =} \FunctionTok{c}\NormalTok{(}
+    \StringTok{"Regulatory or peer review"}\NormalTok{,}
+    \StringTok{"Small sample (n \textless{} 500)"}\NormalTok{,}
+    \StringTok{"Coefficient interpretation needed"}\NormalTok{,}
+    \StringTok{"Maximum predictive accuracy"}\NormalTok{,}
+    \StringTok{"Complex feature interactions"}\NormalTok{,}
+    \StringTok{"Quick prototyping"}
+\NormalTok{  ),}
+  \AttributeTok{Recommendation =} \FunctionTok{c}\NormalTok{(}
+    \StringTok{"Linear model"}\NormalTok{,}
+    \StringTok{"Linear model"}\NormalTok{,}
+    \StringTok{"Linear model"}\NormalTok{,}
+    \StringTok{"Random forest"}\NormalTok{,}
+    \StringTok{"Random forest"}\NormalTok{,}
+    \StringTok{"Linear model"}
+\NormalTok{  ),}
+  \AttributeTok{Rationale =} \FunctionTok{c}\NormalTok{(}
+    \StringTok{"Transparent, auditable logic"}\NormalTok{,}
+    \StringTok{"Fewer parameters, lower variance"}\NormalTok{,}
+    \StringTok{"Direct effect estimates with CIs"}\NormalTok{,}
+    \StringTok{"Flexible, captures non{-}linearity"}\NormalTok{,}
+    \StringTok{"Automatic interaction detection"}\NormalTok{,}
+    \StringTok{"Fast fitting, minimal tuning"}
+\NormalTok{  )}
+\NormalTok{)}
+
+\FunctionTok{kable}\NormalTok{(}
+\NormalTok{  guidelines,}
+  \AttributeTok{col.names =} \FunctionTok{c}\NormalTok{(}
+    \StringTok{"Requirement"}\NormalTok{, }\StringTok{"Recommendation"}\NormalTok{,}
+    \StringTok{"Rationale"}
+\NormalTok{  ),}
+  \AttributeTok{caption =} \StringTok{"Model selection guidelines based on}
+\StringTok{    project requirements."}
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+For the Palmer Penguins dataset, the linear model satisfies the first
+three criteria and falls only marginally short on predictive accuracy.
+The random forest is preferred only when the application demands maximum
+predictive performance and the analyst is willing to forgo direct
+coefficient interpretation.
+
+\section{Practical Prediction
+Comparison}\label{practical-prediction-comparison}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{new\_penguin }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}
+  \AttributeTok{species =} \StringTok{"Gentoo"}\NormalTok{,}
+  \AttributeTok{flipper\_length\_mm =} \DecValTok{220}\NormalTok{,}
+  \AttributeTok{bill\_length\_mm =} \DecValTok{47}\NormalTok{,}
+  \AttributeTok{bill\_depth\_mm =} \DecValTok{15}\NormalTok{,}
+  \AttributeTok{sex =} \StringTok{"male"}\NormalTok{,}
+  \AttributeTok{island =} \StringTok{"Biscoe"}
+\NormalTok{)}
+
+\NormalTok{linear\_pred }\OtherTok{\textless{}{-}} \FunctionTok{predict}\NormalTok{(}
+\NormalTok{  cv\_linear, }\AttributeTok{newdata =}\NormalTok{ new\_penguin}
+\NormalTok{)}
+\NormalTok{rf\_pred }\OtherTok{\textless{}{-}} \FunctionTok{predict}\NormalTok{(}
+\NormalTok{  cv\_rf, }\AttributeTok{newdata =}\NormalTok{ new\_penguin}
+\NormalTok{)}
+
+\NormalTok{pred\_comparison }\OtherTok{\textless{}{-}} \FunctionTok{tibble}\NormalTok{(}
+  \AttributeTok{Model =} \FunctionTok{c}\NormalTok{(}\StringTok{"Linear"}\NormalTok{, }\StringTok{"Random Forest"}\NormalTok{),}
+  \AttributeTok{Predicted\_mass\_g =} \FunctionTok{c}\NormalTok{(linear\_pred, rf\_pred),}
+  \AttributeTok{Difference\_g =} \FunctionTok{c}\NormalTok{(}
+    \ConstantTok{NA}\NormalTok{, rf\_pred }\SpecialCharTok{{-}}\NormalTok{ linear\_pred}
+\NormalTok{  )}
+\NormalTok{)}
+
+\FunctionTok{kable}\NormalTok{(}
+\NormalTok{  pred\_comparison,}
+  \AttributeTok{digits =} \DecValTok{0}\NormalTok{,}
+  \AttributeTok{col.names =} \FunctionTok{c}\NormalTok{(}
+    \StringTok{"Model"}\NormalTok{, }\StringTok{"Predicted Mass (g)"}\NormalTok{, }\StringTok{"Difference (g)"}
+\NormalTok{  ),}
+  \AttributeTok{caption =} \StringTok{"Predicted body mass for a hypothetical}
+\StringTok{    male Gentoo penguin from Biscoe Island."}
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+The two models produce predictions that differ by a modest amount, well
+within the typical measurement uncertainty for field-weighed penguins.
+
+\section{Series Summary}\label{series-summary}
+
+This five-part series traced the full modelling workflow from
+exploratory data analysis to model selection.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{series\_summary }\OtherTok{\textless{}{-}} \FunctionTok{tibble}\NormalTok{(}
+  \AttributeTok{Part =} \FunctionTok{paste}\NormalTok{(}\StringTok{"Part"}\NormalTok{, }\DecValTok{1}\SpecialCharTok{:}\DecValTok{5}\NormalTok{),}
+  \AttributeTok{Topic =} \FunctionTok{c}\NormalTok{(}
+    \StringTok{"EDA and Simple Regression"}\NormalTok{,}
+    \StringTok{"Multiple Regression and Species"}\NormalTok{,}
+    \StringTok{"Cross{-}Validation and Model Comparison"}\NormalTok{,}
+    \StringTok{"Model Diagnostics and Interpretation"}\NormalTok{,}
+    \StringTok{"Random Forest versus Linear Models"}
+\NormalTok{  ),}
+  \AttributeTok{Key\_result =} \FunctionTok{c}\NormalTok{(}
+    \StringTok{"R{-}squared = 0.759 (flipper only)"}\NormalTok{,}
+    \StringTok{"R{-}squared = 0.863 (added species)"}\NormalTok{,}
+    \StringTok{"CV confirms robust generalisation"}\NormalTok{,}
+    \StringTok{"All four assumptions satisfied"}\NormalTok{,}
+    \StringTok{"RF gains only \textasciitilde{}2 pp over linear"}
+\NormalTok{  )}
+\NormalTok{)}
+
+\FunctionTok{kable}\NormalTok{(}
+\NormalTok{  series\_summary,}
+  \AttributeTok{col.names =} \FunctionTok{c}\NormalTok{(}\StringTok{"Part"}\NormalTok{, }\StringTok{"Topic"}\NormalTok{, }\StringTok{"Key Result"}\NormalTok{),}
+  \AttributeTok{caption =} \StringTok{"Summary of findings across all five}
+\StringTok{    parts of the Palmer Penguins series."}
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+The central narrative is one of diminishing returns from complexity. The
+largest performance gain came from incorporating biological context
+(species) in Part 2. Every subsequent addition (polynomial terms, random
+forests, additional predictors) yielded only marginal improvements.
+
+\subsection{Things to Watch Out For}\label{things-to-watch-out-for}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  \textbf{Unfair comparisons.} Giving one model access to additional
+  predictors that the other lacks introduces a confound. We did this
+  deliberately to give the random forest every advantage, but in a
+  formal comparison both models should use the same predictor set.
+\item
+  \textbf{Overstating small differences.} A two- percentage-point
+  improvement in R-squared may be statistically indistinguishable from
+  zero given the sample size. Always check fold-by-fold variability
+  before drawing conclusions.
+\item
+  \textbf{Feature importance is not causation.} The random forest's
+  variable importance ranking reflects predictive utility, not causal
+  effect. Flipper length predicts body mass well, but lengthening a
+  penguin's flippers will not make it heavier.
+\item
+  \textbf{Reproducibility of random forests.} Different random seeds
+  produce different forests and therefore slightly different importance
+  rankings. Always set a seed and report it.
+\item
+  \textbf{Communication burden.} A linear model can be explained in a
+  single equation; a random forest requires diagrams, importance plots,
+  and partial dependence plots. Consider the audience before choosing
+  the model.
+\end{enumerate}
+
+\begin{figure}[H]
+
+{\centering \pandocbounded{\includegraphics[keepaspectratio,alt={Wide Antarctic panorama with penguins visible in the foreground and mountains behind}]{media/images/ambiance3.jpg}}
+
+}
+
+\caption{Antarctic landscape with penguins in the distance}
+
+\end{figure}%
+
+\emph{Closing visual before the summary sections.}
+
+\subsection{Lessons Learnt}\label{lessons-learnt}
+
+\subsubsection{Conceptual Understanding}\label{conceptual-understanding}
+
+\begin{itemize}
+\tightlist
+\item
+  The random forest outperformed the linear model by approximately two
+  percentage points of R-squared, a difference that is modest relative
+  to the loss of interpretability.
+\item
+  Both models identified flipper length and species as the dominant
+  predictors, confirming the biological plausibility of the linear
+  model's structure.
+\item
+  The largest single improvement in the entire series came from adding
+  species to the model in Part 2 (R-squared from 0.76 to 0.86), not from
+  adopting a more complex algorithm.
+\item
+  For well-behaved ecological data with moderate sample sizes, linear
+  models with appropriate biological covariates can match or closely
+  approximate ensemble methods.
+\end{itemize}
+
+\subsubsection{Technical Skills}\label{technical-skills}
+
+\begin{itemize}
+\tightlist
+\item
+  The \texttt{caret} package enables fair model comparison by enforcing
+  identical cross-validation folds across different algorithms via
+  \texttt{trainControl}.
+\item
+  \texttt{varImp()} provides a unified interface for extracting variable
+  importance from both linear and ensemble models, facilitating direct
+  comparison.
+\item
+  Setting \texttt{importance\ =\ TRUE} in \texttt{randomForest} computes
+  permutation-based importance, which is more reliable than
+  impurity-based measures for correlated predictors.
+\item
+  The \texttt{broom} package's \texttt{tidy()} and \texttt{glance()}
+  functions make it straightforward to extract publication-ready
+  coefficient tables from linear models.
+\end{itemize}
+
+\subsubsection{Gotchas and Pitfalls}\label{gotchas-and-pitfalls}
+
+\begin{itemize}
+\tightlist
+\item
+  The \texttt{caret} package's \texttt{train()} function defaults to
+  tuning the \texttt{mtry} hyperparameter for random forests, which can
+  produce confusing output if the analyst expects a single set of
+  results.
+\item
+  Random forest predictions from \texttt{caret} objects require that the
+  new data include all predictor columns, including factor levels
+  present in the training data.
+\item
+  Large \texttt{ntree} values (e.g., 500 or 1000) improve stability but
+  increase computation time; 500 trees is generally sufficient for
+  datasets of this size.
+\item
+  The \texttt{caret} package loads many dependencies; in a reproducible
+  pipeline, pin all package versions with \texttt{renv}.
+\end{itemize}
+
+\subsection{Limitations}\label{limitations}
+
+\begin{itemize}
+\tightlist
+\item
+  The random forest was given two additional predictors (sex and island)
+  that the linear model did not use, making the comparison deliberately
+  generous to the ensemble method.
+\item
+  The dataset contains only 333 complete observations from a single
+  geographic location; results may not generalise to larger or more
+  diverse penguin populations.
+\item
+  The temporal window (2007-2009) is narrow; both models assume
+  stationary relationships that may shift under changing environmental
+  conditions.
+\item
+  We did not tune random forest hyperparameters beyond the default
+  \texttt{mtry} grid, which means the ensemble's performance ceiling may
+  be slightly higher.
+\item
+  Partial dependence plots and interaction effects were not examined;
+  doing so would provide a richer comparison of the two model classes.
+\item
+  The analysis does not account for potential measurement error in the
+  morphometric variables.
+\end{itemize}
+
+\subsection{Opportunities for
+Improvement}\label{opportunities-for-improvement}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Conduct a fair comparison in which both models use the same predictor
+  set (including sex and island in the linear model).
+\item
+  Tune random forest hyperparameters (mtry, ntree, nodesize) using
+  nested cross-validation.
+\item
+  Add gradient-boosted trees (e.g., \texttt{xgboost}) as a third
+  competitor to broaden the comparison.
+\item
+  Generate partial dependence plots for the random forest to visualise
+  the shape of each variable's marginal effect.
+\item
+  Fit a mixed-effects model with species as a random effect to account
+  for population-level variation more formally.
+\item
+  Extend the comparison to classification tasks (e.g., predicting
+  species from morphometrics) to test whether the tradeoff differs for
+  categorical outcomes.
+\end{enumerate}
+
+\section{Wrapping Up}\label{wrapping-up}
+
+This series began with a simple scatter plot of flipper length versus
+body mass and ended with a head-to-head comparison between a linear
+model and a random forest. The central finding is that, for the Palmer
+Penguins dataset, the species-aware linear model provides an excellent
+balance of performance and interpretability. The random forest gains
+only about two percentage points of R-squared while sacrificing the
+transparency that makes linear models so valuable in scientific
+communication.
+
+The principal lesson from this exercise is that model selection is not
+purely a technical decision. The right model depends on the audience,
+the regulatory context, and the relative importance of explanation
+versus prediction. For peer-reviewed ecological research, a
+well-validated linear model with clear coefficient interpretations will
+almost always be preferred over an opaque ensemble that offers marginal
+predictive gains.
+
+For anyone beginning a modelling journey, three pieces of advice are
+offered. First, start simple and add complexity only when the data
+demand it. Second, always cross-validate before claiming that a model
+generalises. Third, run diagnostics to confirm that the model's
+assumptions are satisfied; good predictions from a misspecified model
+are a coincidence, not a guarantee.
+
+Main takeaways:
+
+\begin{itemize}
+\tightlist
+\item
+  The random forest outperformed the linear model by only about two
+  percentage points of R-squared.
+\item
+  Both models agree on the importance of flipper length and species.
+\item
+  The largest gain came from biological context (species), not
+  algorithmic sophistication.
+\item
+  For ecological data of this type, the linear model is the recommended
+  default.
+\end{itemize}
+
+\section{See Also}\label{see-also}
+
+\textbf{Series posts:}
+
+\begin{itemize}
+\tightlist
+\item
+  \href{../08-palmerpenguinspart1/\%20palmerpenguinspart1/}{Part 1: EDA
+  and Simple Regression}
+\item
+  \href{../09-palmerpenguinspart2/\%20palmerpenguinspart2/}{Part 2:
+  Multiple Regression and Species Effects}
+\item
+  \href{../10-palmerpenguinspart3/\%20palmerpenguinspart3/}{Part 3:
+  Cross-Validation and Model Comparison}
+\item
+  \href{../11-palmerpenguinspart4/\%20palmerpenguinspart4/}{Part 4:
+  Model Diagnostics and Interpretation}
+\end{itemize}
+
+\textbf{Key resources:}
+
+\begin{itemize}
+\tightlist
+\item
+  Breiman, L. (2001). Random Forests. \emph{Machine Learning}, 45(1),
+  5-32.
+\item
+  James, G., Witten, D., Hastie, T., \& Tibshirani, R. (2021). \emph{An
+  Introduction to Statistical Learning} (2nd ed.). Springer.
+  \url{https://www.statlearning.com}
+\item
+  Horst, A. M., Hill, A. P., \& Gorman, K. B. (2020). palmerpenguins:
+  Palmer Archipelago (Antarctica) penguin data. R package.
+  \url{https://allisonhorst.github.io/palmerpenguins/}
+\item
+  Kuhn, M. (2008). Building predictive models in R using the caret
+  package. \emph{Journal of Statistical Software}, 28(5).
+\item
+  Molnar, C. (2022). \emph{Interpretable Machine Learning} (2nd ed.).
+  \url{https://christophm.github.io/interpretable-ml-book/}
+\end{itemize}
+
+\section{Reproducibility}\label{reproducibility}
+
+\textbf{Data source:} \texttt{palmerpenguins} R package (built-in
+dataset, no external download required).
+
+\textbf{Pipeline commands:}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{Rscript}\NormalTok{ analysis/scripts/01\_prepare\_data.R}
+\ExtensionTok{Rscript}\NormalTok{ analysis/scripts/02\_fit\_models.R}
+\ExtensionTok{Rscript}\NormalTok{ analysis/scripts/03\_generate\_figures.R}
+\ExtensionTok{quarto}\NormalTok{ render index.qmd}
+\end{Highlighting}
+\end{Shaded}
+
+\textbf{Session information:}
+
+\section{Feedback}\label{feedback}
+
+Corrections, suggestions, and questions are welcome. Please open an
+issue or pull request on the \href{https://github.com/mygit}{GitHub
+repository} or send an email to user@example.com.
+
+
+
+
+\end{document}
